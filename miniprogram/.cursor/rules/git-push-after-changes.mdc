@@ -1,21 +1,69 @@
 ---
-description: 每次代码修改完成后自动推送到 GitHub
+description: 开发流程规则 — 变更记录、冒烟测试、提交推送
 alwaysApply: true
 ---
 
-# Git 推送规则
+# 开发流程规则
 
-每次完成代码修改后，必须将变更提交并推送到 GitHub 远程仓库。
+每次完成功能迭代后，必须按以下流程操作，全部通过才能提交代码。
 
-## 流程
+## 1. 记录变更
 
-1. `git add .` 添加所有变更文件
-2. `git commit -m "简明描述"` 提交（中文提交信息）
-3. `git push` 推送到 GitHub
+在 `CHANGELOG.md` 顶部添加本次变更内容，格式：
 
-## 注意事项
+```markdown
+## [版本号] - YYYY-MM-DD
 
-- 推送前确认 `.gitignore` 已排除敏感文件（`.env`、`*.db` 等）
-- 不要提交 `node_modules/`、`.DS_Store` 等无关文件
-- Git 代理已配置为 `http://127.0.0.1:7897`（Clash Verge），推送时需设置 `ALL_PROXY` 环境变量
-- 远程仓库：https://github.com/mangogogogogogogogogo/pet-health-mp（私有）
+### 新增 / 修复 / 变更 / 移除
+- 具体描述
+```
+
+## 2. 运行冒烟测试
+
+```bash
+cd /Users/mango/projects/pet-health-mp/server && npm test
+```
+
+- 测试使用内存 SQLite，不影响生产数据
+- 当前共 64 条用例，覆盖全部 API 路由
+- **必须 64/64 全部通过**（0 失败）才能进入下一步
+- 如果新增了后端 API，必须在 `server/tests/smoke.test.js` 中补充对应测试用例
+- 如果测试失败，先修复代码再重新跑测试
+
+## 3. 提交代码
+
+```bash
+cd /Users/mango/projects/pet-health-mp
+git add -A
+git commit -m "简明描述"
+```
+
+提交信息用中文，格式参考：
+- `feat: 新增记录编辑功能`
+- `fix: 修复提醒页日期显示错误`
+- `chore: 更新依赖版本`
+
+## 4. 推送到 GitHub
+
+```bash
+export ALL_PROXY=http://127.0.0.1:7897
+git push
+```
+
+- Git 代理已全局配置为 `http://127.0.0.1:7897`（Clash Verge）
+- 如果推送失败先检查代理是否开启
+- 远程仓库：https://github.com/mangogogogogogogogogo/pet-health-mp
+
+## 5. 安全检查
+
+提交前确认以下文件不在 git 中：
+- `.env`（含微信密钥）
+- `*.db` / `*.db-shm` / `*.db-wal`（数据库）
+- `node_modules/`
+- `project.private.config.json`
+
+## 流程总结
+
+**变更记录 → 冒烟测试（全通过）→ git commit → git push**
+
+任何一步失败都不能跳过，必须修复后重新执行。

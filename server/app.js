@@ -123,11 +123,17 @@ process.on('unhandledRejection', (reason) => {
   console.error('🔥 未处理的 Promise 拒绝:', reason);
 });
 
-// ============ 启动服务 ============
+// ============ 导出 app（供测试使用） ============
 
-app.listen(PORT, () => {
-  console.log(`\n🐾 宠物健康记录后端服务已启动`);
-  console.log(`📡 地址: http://localhost:${PORT}`);
-  console.log(`🔗 健康检查: http://localhost:${PORT}/api/health`);
-  console.log(`📅 启动时间: ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}\n`);
-});
+module.exports = app;
+
+// ============ 启动服务（仅直接运行时） ============
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n🐾 宠物健康记录后端服务已启动`);
+    console.log(`📡 地址: http://localhost:${PORT}`);
+    console.log(`🔗 健康检查: http://localhost:${PORT}/api/health`);
+    console.log(`📅 启动时间: ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}\n`);
+  });
+}

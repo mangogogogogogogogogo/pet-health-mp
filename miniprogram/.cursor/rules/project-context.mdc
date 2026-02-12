@@ -12,6 +12,7 @@ alwaysApply: true
 - **数据库**: SQLite（WAL 模式，文件 `server/data/pet_health.db`）
 - **部署**: 腾讯云 Ubuntu 24.04 + PM2（进程名 `pet-health-api`）+ Nginx + Let's Encrypt SSL
 - **域名**: `api.lovepetmango.site`（后端 API）
+- **测试**: supertest（冒烟测试，64 条用例覆盖全部 API）
 - **仓库**: https://github.com/mangogogogogogogogogo/pet-health-mp（私有）
 
 ## 项目结构
@@ -46,6 +47,8 @@ pet-health-mp/
 │   │   ├── stats.js          # GET /api/stats/:petId
 │   │   └── export.js         # GET /api/export
 │   ├── ecosystem.config.js   # PM2 配置
+│   ├── tests/
+│   │   └── smoke.test.js     # 冒烟测试（64 条，npm test 运行）
 │   └── scripts/
 │       ├── backup.sh         # 数据库备份脚本
 │       └── deploy.sh         # 本地一键部署脚本
@@ -118,3 +121,12 @@ id(PK) | user_id(FK) | pet_id(FK) | type(vaccine/deworm/weight/diet) | record_na
 - **Nginx 配置**: `/etc/nginx/sites-available/pet-health`
 - **SSL 证书**: Certbot 自动续期
 - **本地 Git 代理**: `http://127.0.0.1:7897`（Clash Verge）
+- **变更日志**: `CHANGELOG.md`（根目录）
+
+## 开发流程
+
+每次迭代完成后必须按顺序执行：
+1. 更新 `CHANGELOG.md`
+2. 运行 `cd server && npm test`（64 条全部通过）
+3. `git add -A && git commit -m "描述"`
+4. `export ALL_PROXY=http://127.0.0.1:7897 && git push`
