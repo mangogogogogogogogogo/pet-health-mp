@@ -1,0 +1,39 @@
+<!-- 记录列表页面 -->
+<view class="container">
+  <!-- 筛选 -->
+  <view class="filter-bar">
+    <picker mode="selector" range="{{petFilterNames}}" value="{{petFilterIndex}}" bindchange="onPetFilter">
+      <view class="filter-btn">{{petFilterNames[petFilterIndex]}} ▾</view>
+    </picker>
+    <picker mode="selector" range="{{typeFilterNames}}" value="{{typeFilterIndex}}" bindchange="onTypeFilter">
+      <view class="filter-btn">{{typeFilterNames[typeFilterIndex]}} ▾</view>
+    </picker>
+  </view>
+
+  <!-- 记录数量 -->
+  <view class="record-count" wx:if="{{records.length > 0}}">
+    共 {{records.length}} 条记录
+  </view>
+
+  <!-- 记录列表 -->
+  <block wx:if="{{records.length > 0}}">
+    <view class="record-item" wx:for="{{records}}" wx:key="id" bindlongpress="onRecordLongPress" data-id="{{item.id}}">
+      <view class="record-icon {{item.type}}">{{item.icon}}</view>
+      <view class="record-info">
+        <view class="record-title">{{item.petName}} · {{item.typeName}}</view>
+        <view class="record-detail">{{item.detail}}</view>
+        <view class="record-detail" wx:if="{{item.note}}">{{item.note}}</view>
+        <view class="record-detail" style="font-size:22rpx;">{{item.dateStr}}</view>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:elif="{{!loading}}">
+    <view class="empty-icon">📋</view>
+    <view class="empty-text">暂无记录</view>
+    <button class="btn-primary" style="margin-top:30rpx;width:300rpx;" bindtap="goAdd">去添加记录</button>
+  </view>
+
+  <!-- 底部安全区域 -->
+  <view style="height:140rpx;"></view>
+</view>

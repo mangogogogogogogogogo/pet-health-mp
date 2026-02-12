@@ -1,0 +1,64 @@
+<!-- 首页 -->
+<view class="container">
+  <!-- 我的宠物 -->
+  <view class="section-header">
+    <text class="section-title">我的宠物</text>
+    <text class="btn-text" bindtap="goAddPet">+ 添加宠物</text>
+  </view>
+
+  <block wx:if="{{pets.length > 0}}">
+    <view class="pet-card" wx:for="{{pets}}" wx:key="id" bindtap="onPetTap" data-id="{{item.id}}">
+      <view class="pet-avatar">{{item.icon}}</view>
+      <view class="pet-info">
+        <view class="pet-name">{{item.name}}</view>
+        <view class="pet-meta">
+          <text>{{item.breed || item.typeName}}</text>
+          <text wx:if="{{item.age}}">{{item.age}}</text>
+          <text wx:if="{{item.weight}}">{{item.weight}}kg</text>
+        </view>
+      </view>
+      <view class="pet-actions" catchtap="onPetAction" data-id="{{item.id}}">
+        <text style="font-size:36rpx;">···</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:elif="{{!loading}}">
+    <view class="empty-icon">🐱</view>
+    <view class="empty-text">还没有添加宠物</view>
+    <button class="btn-primary" style="margin-top:30rpx;width:300rpx;" bindtap="goAddPet">添加第一只宠物</button>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-actions" wx:if="{{pets.length > 0}}">
+    <view class="quick-action-item" bindtap="goAddRecord">
+      <view class="quick-icon">📝</view>
+      <text>添加记录</text>
+    </view>
+    <view class="quick-action-item" bindtap="goAddPet">
+      <view class="quick-icon">🐾</view>
+      <text>添加宠物</text>
+    </view>
+  </view>
+
+  <!-- 即将到期提醒 -->
+  <view class="section-title" style="margin-top:40rpx;">即将到期</view>
+
+  <block wx:if="{{reminders.length > 0}}">
+    <view class="reminder-item {{item.status}}" wx:for="{{reminders}}" wx:key="id">
+      <view class="record-icon {{item.type}}">{{item.icon}}</view>
+      <view class="record-info" style="flex:1;">
+        <view class="record-title">{{item.petName}} · {{item.name}}</view>
+        <view class="record-detail">{{item.nextDate}}</view>
+      </view>
+      <view class="reminder-badge {{item.status}}">{{item.badgeText}}</view>
+    </view>
+  </block>
+
+  <view class="empty-state" style="padding:40rpx;" wx:elif="{{!loading}}">
+    <view class="empty-text">暂无即将到期的提醒 ✨</view>
+  </view>
+
+  <!-- 底部安全区域 -->
+  <view style="height:140rpx;"></view>
+</view>

@@ -1,0 +1,64 @@
+<!-- 个人中心 -->
+<view class="container">
+  <!-- 头部信息 -->
+  <view class="card profile-header">
+    <view class="profile-avatar">🐾</view>
+    <view class="profile-info">
+      <view class="profile-title">宠物健康记录</view>
+      <view class="profile-subtitle">记录每一次关爱</view>
+    </view>
+  </view>
+
+  <!-- 数据概览 -->
+  <view class="card" wx:if="{{stats}}">
+    <view class="stat-row">
+      <view class="stat-block">
+        <view class="stat-value">{{stats.petCount || 0}}</view>
+        <view class="stat-label">宠物数量</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-block">
+        <view class="stat-value">{{stats.recordCount || 0}}</view>
+        <view class="stat-label">健康记录</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="card">
+    <view class="menu-item" bindtap="goAddPet">
+      <view class="menu-left">
+        <text class="menu-icon">➕</text>
+        <text>添加宠物</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goManagePets">
+      <view class="menu-left">
+        <text class="menu-icon">🐾</text>
+        <text>管理宠物</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="exportData">
+      <view class="menu-left">
+        <text class="menu-icon">📤</text>
+        <text>导出数据</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="showAbout">
+      <view class="menu-left">
+        <text class="menu-icon">ℹ️</text>
+        <text>关于</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-text">v1.0.0</view>
+
+  <!-- 底部安全区域 -->
+  <view style="height:140rpx;"></view>
+</view>

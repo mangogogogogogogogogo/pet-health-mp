@@ -1,0 +1,36 @@
+<!-- 提醒页面 -->
+<view class="container">
+  <view class="section-title">健康提醒</view>
+
+  <!-- 筛选标签 -->
+  <view class="filter-tabs" wx:if="{{reminders.length > 0}}">
+    <view class="filter-tab {{filter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部 ({{reminders.length}})</view>
+    <view class="filter-tab {{filter === 'overdue' ? 'active' : ''}}" bindtap="setFilter" data-filter="overdue">已过期 ({{overdueCount}})</view>
+    <view class="filter-tab {{filter === 'upcoming' ? 'active' : ''}}" bindtap="setFilter" data-filter="upcoming">即将到期 ({{upcomingCount}})</view>
+    <view class="filter-tab {{filter === 'safe' ? 'active' : ''}}" bindtap="setFilter" data-filter="safe">安全 ({{safeCount}})</view>
+  </view>
+
+  <block wx:if="{{filteredReminders.length > 0}}">
+    <view class="reminder-item {{item.status}}" wx:for="{{filteredReminders}}" wx:key="id" bindtap="onReminderTap" data-id="{{item.id}}" data-index="{{index}}">
+      <view class="record-icon {{item.type}}">{{item.icon}}</view>
+      <view style="flex:1;">
+        <view class="record-title">{{item.petName}} · {{item.name}}</view>
+        <view class="record-detail">下次日期：{{item.nextDate}}</view>
+      </view>
+      <view class="reminder-badge {{item.status}}">{{item.badgeText}}</view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:elif="{{reminders.length > 0}}">
+    <view class="empty-text">当前筛选条件下没有提醒</view>
+  </view>
+
+  <view class="empty-state" wx:else>
+    <view class="empty-icon">🔔</view>
+    <view class="empty-text">暂无提醒</view>
+    <view class="empty-hint">添加疫苗或驱虫记录时设置下次日期即可自动生成提醒</view>
+  </view>
+
+  <!-- 底部安全区域 -->
+  <view style="height:140rpx;"></view>
+</view>

@@ -1,0 +1,31 @@
+# 依赖
+node_modules/
+
+# 环境变量（含敏感信息）
+.env
+
+# SQLite 数据库文件
+*.db
+*.db-shm
+*.db-wal
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+logs/
+
+# 微信开发者工具
+miniprogram/project.private.config.json
+miniprogram/sourcemap.zip
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 部署脚本（含内嵌密钥）
+deploy-guide.sh

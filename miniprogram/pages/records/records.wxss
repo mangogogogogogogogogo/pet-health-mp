@@ -1,0 +1,20 @@
+.filter-bar {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.filter-btn {
+  padding: 16rpx 24rpx;
+  background: #FFFFFF;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  color: #2D2D3A;
+  border: 2rpx solid #E8E8F0;
+}
+
+.record-count {
+  font-size: 24rpx;
+  color: #8E8EA0;
+  margin-bottom: 16rpx;
+}

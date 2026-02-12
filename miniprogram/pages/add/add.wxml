@@ -1,0 +1,134 @@
+<!-- 添加记录页面 -->
+<view class="container">
+  <!-- 无宠物时引导 -->
+  <view class="empty-state" wx:if="{{pets.length === 0 && petNames.length === 0}}">
+    <view class="empty-icon">🐾</view>
+    <view class="empty-text">还没有添加宠物</view>
+    <view class="empty-hint">请先添加宠物，再来记录健康数据</view>
+    <button class="btn-primary" style="margin-top:30rpx;width:300rpx;" bindtap="goAddPet">去添加宠物</button>
+  </view>
+
+  <view class="card" wx:else>
+    <!-- 选择宠物 -->
+    <view class="form-group">
+      <text class="form-label">选择宠物</text>
+      <picker mode="selector" range="{{petNames}}" value="{{petIndex}}" bindchange="onPetChange">
+        <view class="picker-wrapper">
+          <text wx:if="{{petIndex >= 0}}">{{petNames[petIndex]}}</text>
+          <text class="picker-placeholder" wx:else>请选择宠物</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 记录类型 -->
+    <view class="form-group">
+      <text class="form-label">记录类型</text>
+      <view class="type-selector">
+        <view class="type-option {{recordType === 'vaccine' ? 'active' : ''}}" bindtap="setType" data-type="vaccine">💉 疫苗</view>
+        <view class="type-option {{recordType === 'deworm' ? 'active' : ''}}" bindtap="setType" data-type="deworm">💊 驱虫</view>
+        <view class="type-option {{recordType === 'weight' ? 'active' : ''}}" bindtap="setType" data-type="weight">⚖️ 体重</view>
+        <view class="type-option {{recordType === 'diet' ? 'active' : ''}}" bindtap="setType" data-type="diet">🍖 饮食</view>
+      </view>
+    </view>
+
+    <!-- 疫苗字段 -->
+    <block wx:if="{{recordType === 'vaccine'}}">
+      <view class="form-group">
+        <text class="form-label">疫苗名称</text>
+        <input class="form-input" placeholder="如：猫三联、狂犬疫苗" value="{{name}}" bindinput="onInput" data-field="name" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">接种日期</text>
+        <picker mode="date" value="{{date}}" bindchange="onDateChange" data-field="date">
+          <view class="picker-wrapper">{{date || '请选择日期'}}</view>
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="form-label">下次接种日期</text>
+        <picker mode="date" value="{{nextDate}}" bindchange="onDateChange" data-field="nextDate">
+          <view class="picker-wrapper">{{nextDate || '请选择日期（可选）'}}</view>
+        </picker>
+      </view>
+    </block>
+
+    <!-- 驱虫字段 -->
+    <block wx:if="{{recordType === 'deworm'}}">
+      <view class="form-group">
+        <text class="form-label">驱虫药品</text>
+        <input class="form-input" placeholder="如：大宠爱、海乐妙" value="{{name}}" bindinput="onInput" data-field="name" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">驱虫类型</text>
+        <view class="type-selector">
+          <view class="type-option {{subType === 'internal' ? 'active' : ''}}" bindtap="setSubType" data-type="internal">体内</view>
+          <view class="type-option {{subType === 'external' ? 'active' : ''}}" bindtap="setSubType" data-type="external">体外</view>
+          <view class="type-option {{subType === 'both' ? 'active' : ''}}" bindtap="setSubType" data-type="both">内外</view>
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">驱虫日期</text>
+        <picker mode="date" value="{{date}}" bindchange="onDateChange" data-field="date">
+          <view class="picker-wrapper">{{date || '请选择日期'}}</view>
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="form-label">下次驱虫日期</text>
+        <picker mode="date" value="{{nextDate}}" bindchange="onDateChange" data-field="nextDate">
+          <view class="picker-wrapper">{{nextDate || '请选择日期（可选）'}}</view>
+        </picker>
+      </view>
+    </block>
+
+    <!-- 体重字段 -->
+    <block wx:if="{{recordType === 'weight'}}">
+      <view class="form-group">
+        <text class="form-label">体重 (kg)</text>
+        <input class="form-input" type="digit" placeholder="如：4.5" value="{{weightValue}}" bindinput="onInput" data-field="weightValue" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">记录日期</text>
+        <picker mode="date" value="{{date}}" bindchange="onDateChange" data-field="date">
+          <view class="picker-wrapper">{{date || '请选择日期'}}</view>
+        </picker>
+      </view>
+    </block>
+
+    <!-- 饮食字段 -->
+    <block wx:if="{{recordType === 'diet'}}">
+      <view class="form-group">
+        <text class="form-label">食物名称</text>
+        <input class="form-input" placeholder="如：皇家猫粮、自制鸡胸肉" value="{{name}}" bindinput="onInput" data-field="name" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">食物类型</text>
+        <view class="type-selector">
+          <view class="type-option {{subType === 'dry' ? 'active' : ''}}" bindtap="setSubType" data-type="dry">干粮</view>
+          <view class="type-option {{subType === 'wet' ? 'active' : ''}}" bindtap="setSubType" data-type="wet">湿粮</view>
+          <view class="type-option {{subType === 'snack' ? 'active' : ''}}" bindtap="setSubType" data-type="snack">零食</view>
+          <view class="type-option {{subType === 'homemade' ? 'active' : ''}}" bindtap="setSubType" data-type="homemade">自制</view>
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">份量 (g)</text>
+        <input class="form-input" type="digit" placeholder="如：50" value="{{amount}}" bindinput="onInput" data-field="amount" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">记录日期</text>
+        <picker mode="date" value="{{date}}" bindchange="onDateChange" data-field="date">
+          <view class="picker-wrapper">{{date || '请选择日期'}}</view>
+        </picker>
+      </view>
+    </block>
+
+    <!-- 备注 -->
+    <view class="form-group">
+      <text class="form-label">备注</text>
+      <textarea class="form-textarea" placeholder="可选填写" value="{{note}}" bindinput="onInput" data-field="note" />
+    </view>
+
+    <button class="btn-primary" bindtap="submitRecord" disabled="{{submitting}}">{{submitting ? '保存中...' : '保存记录'}}</button>
+  </view>
+
+  <!-- 底部安全区域 -->
+  <view style="height:140rpx;"></view>
+</view>

@@ -1,0 +1,14 @@
+.weight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.weight-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 20rpx;
+  background: #F5F5FA;
+  border-radius: 12rpx;
+}

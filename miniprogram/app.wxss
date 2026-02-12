@@ -1,0 +1,303 @@
+/* ===== 全局样式 ===== */
+page {
+  background: #F5F5FA;
+  color: #2D2D3A;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+/* ===== 通用类 ===== */
+.container {
+  padding: 30rpx;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(108, 99, 255, 0.06);
+}
+
+.section-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  margin-bottom: 24rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.btn-text {
+  color: #6C63FF;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+/* ===== 按钮 ===== */
+.btn-primary {
+  background: #6C63FF;
+  color: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 24rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  width: 100%;
+  border: none;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-secondary {
+  background: #F5F5FA;
+  color: #2D2D3A;
+  border-radius: 16rpx;
+  padding: 24rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: 2rpx solid #E8E8F0;
+}
+
+/* ===== 表单 ===== */
+.form-group {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #2D2D3A;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  padding: 20rpx 24rpx;
+  border: 2rpx solid #E8E8F0;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #2D2D3A;
+  background: #FFFFFF;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 20rpx 24rpx;
+  border: 2rpx solid #E8E8F0;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #2D2D3A;
+  min-height: 160rpx;
+  box-sizing: border-box;
+}
+
+/* ===== 类型选择器 ===== */
+.type-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.type-option {
+  padding: 14rpx 28rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  border: 2rpx solid #E8E8F0;
+  background: #FFFFFF;
+  color: #2D2D3A;
+}
+
+.type-option.active {
+  background: #6C63FF;
+  color: #FFFFFF;
+  border-color: #6C63FF;
+}
+
+/* ===== 宠物卡片 ===== */
+.pet-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 24rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(108, 99, 255, 0.06);
+}
+
+.pet-avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E8E6FF, #F0EFFF);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+
+.pet-info {
+  flex: 1;
+}
+
+.pet-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.pet-meta {
+  display: flex;
+  gap: 20rpx;
+  font-size: 24rpx;
+  color: #8E8EA0;
+}
+
+/* ===== 记录项 ===== */
+.record-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 24rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 4rpx 20rpx rgba(108, 99, 255, 0.06);
+}
+
+.record-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+.record-icon.vaccine { background: #E8F5E9; }
+.record-icon.deworm { background: #FFF3E0; }
+.record-icon.weight { background: #E3F2FD; }
+.record-icon.diet { background: #FCE4EC; }
+
+.record-info {
+  flex: 1;
+}
+
+.record-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+
+.record-detail {
+  font-size: 24rpx;
+  color: #8E8EA0;
+}
+
+/* ===== 提醒项 ===== */
+.reminder-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 24rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 4rpx 20rpx rgba(108, 99, 255, 0.06);
+  border-left: 8rpx solid #FF9800;
+}
+
+.reminder-item.overdue { border-left-color: #F44336; }
+.reminder-item.upcoming { border-left-color: #FF9800; }
+.reminder-item.safe { border-left-color: #4CAF50; }
+
+.reminder-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 40rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.reminder-badge.overdue { background: #FFEBEE; color: #F44336; }
+.reminder-badge.upcoming { background: #FFF8E1; color: #F57F17; }
+.reminder-badge.safe { background: #E8F5E9; color: #4CAF50; }
+
+/* ===== 空状态 ===== */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  color: #8E8EA0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #C0C0C0;
+  margin-top: 12rpx;
+}
+
+/* ===== 统计 ===== */
+.stat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.stat-item {
+  flex: 1;
+  min-width: 40%;
+  text-align: center;
+  padding: 24rpx;
+  background: #F5F5FA;
+  border-radius: 16rpx;
+}
+
+.stat-value {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #6C63FF;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #8E8EA0;
+  margin-top: 8rpx;
+}
+
+/* ===== picker ===== */
+.picker-wrapper {
+  padding: 20rpx 24rpx;
+  border: 2rpx solid #E8E8F0;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #2D2D3A;
+  background: #FFFFFF;
+}
+
+.picker-placeholder {
+  color: #C0C0C0;
+}
