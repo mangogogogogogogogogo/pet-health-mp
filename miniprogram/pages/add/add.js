@@ -31,9 +31,15 @@ Page({
       const petNames = (pets || []).map(p => `${util.petIcon(p.type)} ${p.name}`);
       this.setData({ pets, petNames });
 
-      // 如果只有一只宠物，自动选中
-      if (pets && pets.length === 1 && this.data.petIndex < 0) {
-        this.setData({ petIndex: 0 });
+      // 自动选中逻辑
+      if (pets && pets.length > 0) {
+        const currentIndex = this.data.petIndex;
+        // 如果没有选中，或者选中索引已超出范围，自动选中第一只
+        if (currentIndex < 0 || currentIndex >= pets.length) {
+          this.setData({ petIndex: 0 });
+        }
+      } else {
+        this.setData({ petIndex: -1 });
       }
     } catch (err) {
       console.error(err);

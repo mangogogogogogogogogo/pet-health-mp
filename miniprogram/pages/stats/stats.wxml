@@ -2,9 +2,9 @@
 <view class="container">
   <view class="form-group" wx:if="{{!petId}}">
     <picker mode="selector" range="{{petNames}}" value="{{petIndex}}" bindchange="onPetChange">
-      <view class="picker-wrapper">
+      <view class="picker-wrapper {{petIndex >= 0 ? '' : 'picker-empty'}}">
         <text wx:if="{{petIndex >= 0}}">{{petNames[petIndex]}}</text>
-        <text class="picker-placeholder" wx:else>请选择宠物查看统计</text>
+        <text wx:else>请选择宠物查看统计</text>
       </view>
     </picker>
   </view>

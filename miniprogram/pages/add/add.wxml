@@ -13,9 +13,9 @@
     <view class="form-group">
       <text class="form-label">选择宠物</text>
       <picker mode="selector" range="{{petNames}}" value="{{petIndex}}" bindchange="onPetChange">
-        <view class="picker-wrapper">
+        <view class="picker-wrapper {{petIndex >= 0 ? '' : 'picker-empty'}}">
           <text wx:if="{{petIndex >= 0}}">{{petNames[petIndex]}}</text>
-          <text class="picker-placeholder" wx:else>请选择宠物</text>
+          <text wx:else>请选择宠物</text>
         </view>
       </picker>
     </view>
@@ -35,7 +35,7 @@
     <block wx:if="{{recordType === 'vaccine'}}">
       <view class="form-group">
         <text class="form-label">疫苗名称</text>
-        <input class="form-input" placeholder="如：猫三联、狂犬疫苗" value="{{name}}" bindinput="onInput" data-field="name" />
+        <input class="form-input" placeholder="如：猫三联、狂犬疫苗" placeholder-class="form-input-placeholder" value="{{name}}" bindinput="onInput" data-field="name" />
       </view>
       <view class="form-group">
         <text class="form-label">接种日期</text>
@@ -46,7 +46,7 @@
       <view class="form-group">
         <text class="form-label">下次接种日期</text>
         <picker mode="date" value="{{nextDate}}" bindchange="onDateChange" data-field="nextDate">
-          <view class="picker-wrapper">{{nextDate || '请选择日期（可选）'}}</view>
+          <view class="picker-wrapper {{nextDate ? '' : 'picker-empty'}}">{{nextDate || '请选择日期（可选）'}}</view>
         </picker>
       </view>
     </block>
@@ -55,7 +55,7 @@
     <block wx:if="{{recordType === 'deworm'}}">
       <view class="form-group">
         <text class="form-label">驱虫药品</text>
-        <input class="form-input" placeholder="如：大宠爱、海乐妙" value="{{name}}" bindinput="onInput" data-field="name" />
+        <input class="form-input" placeholder="如：大宠爱、海乐妙" placeholder-class="form-input-placeholder" value="{{name}}" bindinput="onInput" data-field="name" />
       </view>
       <view class="form-group">
         <text class="form-label">驱虫类型</text>
@@ -74,7 +74,7 @@
       <view class="form-group">
         <text class="form-label">下次驱虫日期</text>
         <picker mode="date" value="{{nextDate}}" bindchange="onDateChange" data-field="nextDate">
-          <view class="picker-wrapper">{{nextDate || '请选择日期（可选）'}}</view>
+          <view class="picker-wrapper {{nextDate ? '' : 'picker-empty'}}">{{nextDate || '请选择日期（可选）'}}</view>
         </picker>
       </view>
     </block>
@@ -83,7 +83,7 @@
     <block wx:if="{{recordType === 'weight'}}">
       <view class="form-group">
         <text class="form-label">体重 (kg)</text>
-        <input class="form-input" type="digit" placeholder="如：4.5" value="{{weightValue}}" bindinput="onInput" data-field="weightValue" />
+        <input class="form-input" type="digit" placeholder="如：4.5" placeholder-class="form-input-placeholder" value="{{weightValue}}" bindinput="onInput" data-field="weightValue" />
       </view>
       <view class="form-group">
         <text class="form-label">记录日期</text>
@@ -97,7 +97,7 @@
     <block wx:if="{{recordType === 'diet'}}">
       <view class="form-group">
         <text class="form-label">食物名称</text>
-        <input class="form-input" placeholder="如：皇家猫粮、自制鸡胸肉" value="{{name}}" bindinput="onInput" data-field="name" />
+        <input class="form-input" placeholder="如：皇家猫粮、自制鸡胸肉" placeholder-class="form-input-placeholder" value="{{name}}" bindinput="onInput" data-field="name" />
       </view>
       <view class="form-group">
         <text class="form-label">食物类型</text>
@@ -110,7 +110,7 @@
       </view>
       <view class="form-group">
         <text class="form-label">份量 (g)</text>
-        <input class="form-input" type="digit" placeholder="如：50" value="{{amount}}" bindinput="onInput" data-field="amount" />
+        <input class="form-input" type="digit" placeholder="如：50" placeholder-class="form-input-placeholder" value="{{amount}}" bindinput="onInput" data-field="amount" />
       </view>
       <view class="form-group">
         <text class="form-label">记录日期</text>
@@ -123,7 +123,7 @@
     <!-- 备注 -->
     <view class="form-group">
       <text class="form-label">备注</text>
-      <textarea class="form-textarea" placeholder="可选填写" value="{{note}}" bindinput="onInput" data-field="note" />
+      <textarea class="form-textarea" placeholder="可选填写" placeholder-class="form-textarea-placeholder" value="{{note}}" bindinput="onInput" data-field="note" />
     </view>
 
     <button class="btn-primary" bindtap="submitRecord" disabled="{{submitting}}">{{submitting ? '保存中...' : '保存记录'}}</button>

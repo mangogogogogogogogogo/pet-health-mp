@@ -3,7 +3,7 @@
   <view class="card">
     <view class="form-group">
       <text class="form-label">宠物名字</text>
-      <input class="form-input" placeholder="如：小橘" value="{{petForm.name}}" bindinput="onPetInput" data-field="name" />
+      <input class="form-input" placeholder="如：小橘" placeholder-class="form-input-placeholder" value="{{petForm.name}}" bindinput="onPetInput" data-field="name" />
     </view>
 
     <view class="form-group">
@@ -17,13 +17,13 @@
 
     <view class="form-group">
       <text class="form-label">品种</text>
-      <input class="form-input" placeholder="如：橘猫、金毛" value="{{petForm.breed}}" bindinput="onPetInput" data-field="breed" />
+      <input class="form-input" placeholder="如：橘猫、金毛" placeholder-class="form-input-placeholder" value="{{petForm.breed}}" bindinput="onPetInput" data-field="breed" />
     </view>
 
     <view class="form-group">
       <text class="form-label">生日</text>
       <picker mode="date" value="{{petForm.birthday}}" bindchange="onBirthdayChange">
-        <view class="picker-wrapper">{{petForm.birthday || '请选择日期（可选）'}}</view>
+        <view class="picker-wrapper {{petForm.birthday ? '' : 'picker-empty'}}">{{petForm.birthday || '请选择日期（可选）'}}</view>
       </picker>
     </view>
 
@@ -37,10 +37,15 @@
 
     <view class="form-group">
       <text class="form-label">当前体重 (kg)</text>
-      <input class="form-input" type="digit" placeholder="如：4.5" value="{{petForm.weight}}" bindinput="onPetInput" data-field="weight" />
+      <input class="form-input" type="digit" placeholder="如：4.5" placeholder-class="form-input-placeholder" value="{{petForm.weight}}" bindinput="onPetInput" data-field="weight" />
     </view>
 
-    <button class="btn-primary" bindtap="savePet">保存</button>
-    <button class="btn-secondary" style="margin-top:16rpx;" bindtap="cancelForm">取消</button>
+    <view class="btn-group">
+      <button class="btn-primary" bindtap="savePet">保存</button>
+      <button class="btn-secondary" bindtap="cancelForm">取消</button>
+    </view>
   </view>
+
+  <!-- 底部安全区域 -->
+  <view style="height:60rpx;"></view>
 </view>

@@ -82,13 +82,19 @@ page {
 
 .form-input {
   width: 100%;
-  padding: 20rpx 24rpx;
+  height: 88rpx;
+  padding: 0 24rpx;
   border: 2rpx solid #E8E8F0;
   border-radius: 16rpx;
   font-size: 28rpx;
   color: #2D2D3A;
   background: #FFFFFF;
   box-sizing: border-box;
+}
+
+.form-input-placeholder {
+  color: #C0C0C0;
+  font-size: 28rpx;
 }
 
 .form-textarea {
@@ -100,6 +106,11 @@ page {
   color: #2D2D3A;
   min-height: 160rpx;
   box-sizing: border-box;
+}
+
+.form-textarea-placeholder {
+  color: #C0C0C0;
+  font-size: 28rpx;
 }
 
 /* ===== 类型选择器 ===== */
@@ -288,14 +299,28 @@ page {
   margin-top: 8rpx;
 }
 
+/* ===== 按钮组 ===== */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-top: 10rpx;
+}
+
 /* ===== picker ===== */
 .picker-wrapper {
-  padding: 20rpx 24rpx;
+  padding: 0 24rpx;
+  height: 88rpx;
+  line-height: 88rpx;
   border: 2rpx solid #E8E8F0;
   border-radius: 16rpx;
   font-size: 28rpx;
   color: #2D2D3A;
   background: #FFFFFF;
+}
+
+.picker-wrapper.picker-empty {
+  color: #C0C0C0;
 }
 
 .picker-placeholder {
