@@ -1,0 +1,43 @@
+---
+description: 迭代计划与待办功能，开发时参考优先级
+alwaysApply: true
+---
+
+# 迭代计划
+
+## 第一阶段：补齐核心功能（P0-P1）
+
+- [ ] **记录编辑** — 后端加 PUT /api/records/:id，前端复用 add 页或新建编辑页
+- [ ] **提醒续期** — 提醒页支持"完成并设下次日期"，而非只能删除
+- [ ] **提醒跳转预填** — 从提醒页跳添加页时带上 petId + recordType 参数
+- [ ] **记录分页** — records/reminders 加 limit/offset 分页，前端滚动加载
+
+## 第二阶段：体验提升（P2）
+
+- [ ] **体重折线图** — Canvas 或 wx-charts 绘制体重趋势
+- [ ] **微信订阅消息** — 疫苗/驱虫到期前推送通知
+- [ ] **宠物头像上传** — wx.chooseImage + 腾讯云 COS 存储
+- [ ] **组件化重构** — 抽取 pet-card、record-item、reminder-item 公共组件
+- [ ] **记录搜索** — 按关键词搜索记录
+
+## 第三阶段：高级功能（P3）
+
+- [ ] 多用户共享宠物（家庭成员协作）
+- [ ] 导出 PDF/Excel 报告
+- [ ] AI 健康建议
+- [ ] 医院/兽医管理
+- [ ] 费用记录与统计
+
+## 技术改进
+
+- [ ] CI/CD — GitHub Actions 自动部署
+- [ ] 错误监控 — Sentry 接入
+- [ ] 单元测试 — 核心 API 测试覆盖
+- [ ] 数据库迁移 — 用户量增长后考虑 PostgreSQL
+
+## 已知问题
+
+- records 路由缺少 PUT（编辑）接口
+- 提醒无法单独更新 next_date
+- users 表 nickname/avatar_url 字段未使用
+- pets 表 avatar_url 字段未使用

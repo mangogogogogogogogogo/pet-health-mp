@@ -1,0 +1,21 @@
+---
+description: 每次代码修改完成后自动推送到 GitHub
+alwaysApply: true
+---
+
+# Git 推送规则
+
+每次完成代码修改后，必须将变更提交并推送到 GitHub 远程仓库。
+
+## 流程
+
+1. `git add .` 添加所有变更文件
+2. `git commit -m "简明描述"` 提交（中文提交信息）
+3. `git push` 推送到 GitHub
+
+## 注意事项
+
+- 推送前确认 `.gitignore` 已排除敏感文件（`.env`、`*.db` 等）
+- 不要提交 `node_modules/`、`.DS_Store` 等无关文件
+- Git 代理已配置为 `http://127.0.0.1:7897`（Clash Verge），推送时需设置 `ALL_PROXY` 环境变量
+- 远程仓库：https://github.com/mangogogogogogogogogo/pet-health-mp（私有）

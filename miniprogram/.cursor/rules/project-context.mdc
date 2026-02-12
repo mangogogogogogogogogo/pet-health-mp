@@ -1,0 +1,120 @@
+---
+description: 宠物健康记录小程序 - 项目架构与上下文，每次对话自动加载
+alwaysApply: true
+---
+
+# 宠物健康记录小程序 (pet-health-mp)
+
+## 技术栈
+
+- **前端**: 微信小程序原生框架（WXML + WXSS + JS）
+- **后端**: Node.js + Express 4 + better-sqlite3
+- **数据库**: SQLite（WAL 模式，文件 `server/data/pet_health.db`）
+- **部署**: 腾讯云 Ubuntu 24.04 + PM2（进程名 `pet-health-api`）+ Nginx + Let's Encrypt SSL
+- **域名**: `api.lovepetmango.site`（后端 API）
+- **仓库**: https://github.com/mangogogogogogogogogo/pet-health-mp（私有）
+
+## 项目结构
+
+```
+pet-health-mp/
+├── miniprogram/              # 微信小程序（Cursor 工作区根目录）
+│   ├── app.js                # 全局逻辑：登录、request() 封装
+│   ├── app.json              # 页面列表、TabBar、窗口配置
+│   ├── app.wxss              # 全局样式（form-input、picker、btn 等）
+│   ├── pages/
+│   │   ├── index/            # 首页：宠物列表 + 即将到期提醒
+│   │   ├── records/          # 记录列表：按宠物/类型筛选，长按删除
+│   │   ├── add/              # 添加记录：疫苗/驱虫/体重/饮食
+│   │   ├── reminders/        # 提醒：已过期/即将到期/安全
+│   │   ├── stats/            # 统计：概览 + 体重趋势（非 TabBar 页）
+│   │   ├── profile/          # 个人中心：概览、菜单、导出
+│   │   └── pet-form/         # 添加/编辑宠物（非 TabBar 页，navigateTo）
+│   ├── custom-tab-bar/       # 自定义 TabBar（5 个 tab）
+│   └── utils/util.js         # 工具：日期、图标、loading
+├── server/                   # 后端
+│   ├── app.js                # Express 入口：安全头、限流、路由、错误处理
+│   ├── config/
+│   │   ├── database.js       # SQLite 连接（WAL + 外键）
+│   │   └── init-db.js        # 建表脚本
+│   ├── middleware/auth.js    # 鉴权：openId → req.user
+│   ├── routes/
+│   │   ├── user.js           # POST /api/user/login
+│   │   ├── pets.js           # GET/POST/PUT/DELETE /api/pets
+│   │   ├── records.js        # GET/POST/DELETE /api/records（⚠️ 缺 PUT）
+│   │   ├── reminders.js      # GET /api/reminders, GET /api/reminders/upcoming
+│   │   ├── stats.js          # GET /api/stats/:petId
+│   │   └── export.js         # GET /api/export
+│   ├── ecosystem.config.js   # PM2 配置
+│   └── scripts/
+│       ├── backup.sh         # 数据库备份脚本
+│       └── deploy.sh         # 本地一键部署脚本
+└── .gitignore
+```
+
+## TabBar 页面（5 个，只能用 wx.switchTab 跳转）
+
+1. `pages/index/index` — 首页
+2. `pages/records/records` — 记录
+3. `pages/add/add` — 添加
+4. `pages/reminders/reminders` — 提醒
+5. `pages/profile/profile` — 我的
+
+## 非 TabBar 页面（用 wx.navigateTo 跳转）
+
+- `pages/stats/stats` — 统计
+- `pages/pet-form/pet-form` — 宠物表单
+
+## 数据库表
+
+### users
+id(PK) | open_id(UNIQUE) | nickname | avatar_url | created_at | updated_at
+
+### pets
+id(PK) | user_id(FK) | name | type(cat/dog/other) | breed | birthday | gender(male/female) | weight(REAL) | avatar_url | created_at | updated_at
+
+### records
+id(PK) | user_id(FK) | pet_id(FK) | type(vaccine/deworm/weight/diet) | record_name | record_date | next_date | sub_type | weight_value(REAL) | diet_amount(REAL) | note | created_at | updated_at
+
+## API 路由一览
+
+| 方法 | 路径 | 鉴权 | 功能 |
+|------|------|------|------|
+| POST | /api/user/login | 否 | 微信 code 登录 |
+| GET | /api/pets | 是 | 宠物列表 |
+| GET | /api/pets/:id | 是 | 单个宠物 |
+| POST | /api/pets | 是 | 添加宠物 |
+| PUT | /api/pets/:id | 是 | 更新宠物 |
+| DELETE | /api/pets/:id | 是 | 删除宠物+关联记录 |
+| GET | /api/records | 是 | 记录列表（?pet_id=&type=） |
+| POST | /api/records | 是 | 添加记录 |
+| DELETE | /api/records/:id | 是 | 删除记录 |
+| GET | /api/reminders | 是 | 全部提醒 |
+| GET | /api/reminders/upcoming | 是 | 即将到期（?days=14） |
+| GET | /api/stats/:petId | 是 | 宠物统计 |
+| GET | /api/export | 是 | 导出全部数据 |
+| GET | /api/health | 否 | 健康检查 |
+
+## 鉴权机制
+
+- 前端 `app.js` 的 `request()` 方法统一在 URL query 加 `openId`
+- 后端 `auth` 中间件从 `req.query.openId` 查 users 表，挂载 `req.user`
+- 登录用 `_loginReady` Promise 保证 openId 就绪后才发请求
+
+## 关键约定
+
+- **openId 传递**: 所有 HTTP 方法统一走 URL query（兼容 DELETE）
+- **TabBar 跳转**: TabBar 页只能用 `wx.switchTab`，非 TabBar 页用 `wx.navigateTo`
+- **全局样式**: `.form-input`、`.form-textarea`、`.picker-wrapper`、`.btn-primary`、`.btn-secondary` 等定义在 `app.wxss`
+- **placeholder 样式**: 使用 `placeholder-class="form-input-placeholder"` 和 `.picker-empty` class
+- **体重同步**: 添加体重记录时自动更新 `pets.weight`
+- **提醒来源**: records 表中 `next_date` 不为空的记录，无单独 reminders 表
+
+## 部署信息
+
+- **服务器**: 腾讯云 43.156.90.252（Ubuntu 24.04）
+- **代码路径**: `/opt/pet-health/server/`
+- **PM2 进程名**: `pet-health-api`
+- **Nginx 配置**: `/etc/nginx/sites-available/pet-health`
+- **SSL 证书**: Certbot 自动续期
+- **本地 Git 代理**: `http://127.0.0.1:7897`（Clash Verge）
