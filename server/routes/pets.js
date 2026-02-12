@@ -1,9 +1,21 @@
+/**
+ * 宠物管理路由
+ *
+ * 提供宠物的增删改查接口，所有接口需要 openId 鉴权。
+ * 每个用户只能操作自己的宠物（通过 req.user.id 限制）。
+ *
+ * 路由：
+ *   GET    /api/pets      - 获取用户的所有宠物
+ *   GET    /api/pets/:id  - 获取单个宠物详情
+ *   POST   /api/pets      - 添加新宠物
+ *   PUT    /api/pets/:id  - 更新宠物信息
+ *   DELETE /api/pets/:id  - 删除宠物（同时删除该宠物的所有记录）
+ */
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const auth = require('../middleware/auth');
 
-// 所有宠物接口需要鉴权
 router.use(auth);
 
 /**
@@ -84,12 +96,15 @@ router.put('/:id', (req, res) => {
 
 /**
  * DELETE /api/pets/:id - 删除宠物（连带删除所有记录）
+ *
+ * 注意：虽然数据库设置了 ON DELETE CASCADE，但这里手动先删记录再删宠物，
+ * 是为了确保 user_id 校验（防止用户通过伪造 pet_id 删除他人记录）。
  */
 router.delete('/:id', (req, res) => {
   try {
-    // 先删除该宠物的所有记录
+    // 先删除该宠物的所有健康记录（疫苗、驱虫、体重、饮食）
     db.prepare('DELETE FROM records WHERE pet_id = ? AND user_id = ?').run(req.params.id, req.user.id);
-    // 再删除宠物
+    // 再删除宠物本身
     db.prepare('DELETE FROM pets WHERE id = ? AND user_id = ?').run(req.params.id, req.user.id);
     res.json({ success: true, data: null });
   } catch (err) {

@@ -1,3 +1,18 @@
+/**
+ * 用户登录路由
+ *
+ * 登录流程：
+ *   1. 前端调用 wx.login() 获取临时 code
+ *   2. 前端将 code 发送到本接口
+ *   3. 后端用 code + AppID + Secret 调用微信 jscode2session 接口换取 openId
+ *   4. 根据 openId 查找或创建用户，返回用户信息
+ *
+ * 开发模式（DEV_MODE=true 或未配置 AppID）：
+ *   跳过微信 API 调用，使用 "dev_" + code 作为临时 openId，方便本地调试。
+ *
+ * 路由：
+ *   POST /api/user/login - 微信登录
+ */
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');

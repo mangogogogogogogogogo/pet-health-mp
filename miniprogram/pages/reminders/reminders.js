@@ -1,12 +1,26 @@
+/**
+ * 提醒页
+ *
+ * 展示所有有下次日期（next_date）的记录，按到期紧急程度分类：
+ * - overdue（已过期）：next_date < 今天
+ * - upcoming（即将到期）：0~7 天内到期
+ * - safe（安全）：7 天以上
+ *
+ * 支持按状态筛选（全部/已过期/即将到期/安全）。
+ * 点击提醒可选择"去添加新记录"或"删除此提醒"。
+ *
+ * 注意：删除提醒实际上是删除整条健康记录（records 表），
+ *       因为提醒就是 records 表中 next_date 不为空的记录。
+ */
 const app = getApp();
 const util = require('../../utils/util');
 
 Page({
   data: {
-    reminders: [],
-    filteredReminders: [],
-    filter: 'all',
-    overdueCount: 0,
+    reminders: [],          // 全部提醒（已格式化）
+    filteredReminders: [],  // 按当前筛选条件过滤后的列表
+    filter: 'all',          // 当前筛选条件：all/overdue/upcoming/safe
+    overdueCount: 0,        // 各状态计数，用于筛选标签显示
     upcomingCount: 0,
     safeCount: 0,
   },

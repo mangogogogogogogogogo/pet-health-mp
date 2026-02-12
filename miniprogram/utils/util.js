@@ -1,8 +1,14 @@
 /**
- * 工具函数
+ * 全局工具函数
+ *
+ * 包含日期处理、宠物/记录类型映射、微信 UI 封装等公共方法。
+ * 所有页面通过 require('../../utils/util') 引入使用。
  */
 
-// 格式化日期
+/**
+ * 格式化日期为 YYYY-MM-DD 字符串
+ * 兼容各种日期输入格式（Date 对象、ISO 字符串等）
+ */
 function formatDate(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
@@ -17,7 +23,10 @@ function getToday() {
   return formatDate(new Date());
 }
 
-// 计算年龄
+/**
+ * 根据生日计算宠物年龄
+ * 不足 12 个月显示"X个月"，超过 12 个月显示"X岁X月"
+ */
 function getAge(birthday) {
   if (!birthday) return '';
   const birth = new Date(birthday);
@@ -29,7 +38,11 @@ function getAge(birthday) {
   return remain > 0 ? `${years}岁${remain}月` : `${years}岁`;
 }
 
-// 计算天数差
+/**
+ * 计算目标日期距今天的天数差
+ * 正数 = 未来（还剩 N 天），负数 = 过去（已过期 N 天），0 = 今天
+ * 用于提醒状态判断（overdue / upcoming / safe）
+ */
 function diffDays(dateStr) {
   const target = new Date(dateStr);
   const today = new Date();

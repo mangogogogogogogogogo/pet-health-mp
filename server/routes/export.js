@@ -1,3 +1,12 @@
+/**
+ * 数据导出路由
+ *
+ * 将用户的全部宠物和健康记录打包为 JSON 格式返回。
+ * 前端接收后格式化为文本，复制到剪贴板供用户使用。
+ *
+ * 路由：
+ *   GET /api/export - 导出当前用户的所有数据
+ */
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');

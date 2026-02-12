@@ -1,3 +1,16 @@
+/**
+ * 健康记录路由
+ *
+ * 管理宠物的四种健康记录：疫苗(vaccine)、驱虫(deworm)、体重(weight)、饮食(diet)。
+ * 所有接口需要 openId 鉴权。
+ *
+ * 路由：
+ *   GET    /api/records     - 获取记录列表（支持 pet_id、type 筛选）
+ *   POST   /api/records     - 添加记录（体重记录会自动同步到宠物表）
+ *   DELETE /api/records/:id - 删除单条记录
+ *
+ * ⚠️ 待实现：PUT /api/records/:id（记录编辑）
+ */
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
@@ -61,7 +74,8 @@ router.post('/', (req, res) => {
       note || ''
     );
 
-    // 如果是体重记录，同步更新宠物当前体重
+    // 体重记录特殊处理：同步更新宠物表的当前体重字段
+    // 这样首页和统计页能直接从 pets 表读取最新体重，无需额外查询 records
     if (type === 'weight' && weight_value) {
       db.prepare('UPDATE pets SET weight = ? WHERE id = ?').run(weight_value, pet_id);
     }

@@ -1,20 +1,34 @@
+/**
+ * 添加记录页
+ *
+ * 支持四种记录类型：
+ * - vaccine（疫苗）：名称 + 接种日期 + 下次接种日期
+ * - deworm（驱虫）：药品名 + 驱虫类型（体内/体外/内外）+ 日期 + 下次日期
+ * - weight（体重）：体重值(kg) + 记录日期
+ * - diet（饮食）：食物名 + 类型（干粮/湿粮/零食/自制）+ 份量(g) + 日期
+ *
+ * 关键逻辑：
+ * - 每次进入页面（onShow）都重新加载宠物列表，确保最新
+ * - 提交成功后重置表单并延迟 1.5s 跳回首页
+ * - 无宠物时显示引导，点击跳转到宠物表单页
+ */
 const app = getApp();
 const util = require('../../utils/util');
 
 Page({
   data: {
-    pets: [],
-    petNames: [],
-    petIndex: -1,
-    recordType: 'vaccine',
-    subType: 'internal',
-    name: '',
-    date: '',
-    nextDate: '',
-    weightValue: '',
-    amount: '',
-    note: '',
-    submitting: false,
+    pets: [],         // 原始宠物列表
+    petNames: [],     // 格式化后的宠物名称（带图标，用于 picker 展示）
+    petIndex: -1,     // 当前选中的宠物索引，-1 表示未选中
+    recordType: 'vaccine',  // 当前选择的记录类型
+    subType: 'internal',    // 子类型（驱虫：internal/external/both；饮食：dry/wet/snack/homemade）
+    name: '',         // 疫苗名称/药品名/食物名
+    date: '',         // 记录日期
+    nextDate: '',     // 下次日期（疫苗和驱虫）
+    weightValue: '',  // 体重值
+    amount: '',       // 饮食份量
+    note: '',         // 备注
+    submitting: false,  // 防止重复提交的锁
   },
 
   onShow() {

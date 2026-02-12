@@ -1,14 +1,28 @@
+/**
+ * 首页
+ *
+ * 展示内容：
+ * 1. 用户的宠物列表（带图标、品种、年龄、体重）
+ * 2. 即将到期的提醒（14 天内的疫苗/驱虫到期提醒）
+ *
+ * 交互：
+ * - 点击宠物卡片 → 进入该宠物的统计页
+ * - 长按宠物卡片 → 编辑/删除菜单
+ * - 点击"添加宠物" → 跳转到宠物表单页（非 TabBar 页，用 navigateTo）
+ * - 点击"添加记录" → 切换到添加页（TabBar 页，用 switchTab）
+ */
 const app = getApp();
 const util = require('../../utils/util');
 
 Page({
   data: {
-    pets: [],
-    reminders: [],
+    pets: [],       // 宠物列表（已格式化，含 icon、age 等展示字段）
+    reminders: [],  // 即将到期的提醒列表（已格式化，含状态和倒计时文案）
     loading: true,
   },
 
   onShow() {
+    // 设置 TabBar 选中状态（自定义 TabBar 需要手动同步）
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 });
     }
@@ -34,6 +48,10 @@ Page({
 
       // 加载提醒
       const reminders = await app.request('/reminders/upcoming');
+      // 提醒状态分类逻辑：
+      // - overdue: 已过期（next_date < 今天）
+      // - upcoming: 即将到期（0~7 天内）
+      // - safe: 安全（7 天以上）
       const formattedReminders = (reminders || []).map(r => {
         const days = util.diffDays(r.next_date);
         let status = 'safe';

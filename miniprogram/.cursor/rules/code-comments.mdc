@@ -1,0 +1,117 @@
+---
+description: 代码注释规范 — 所有注释使用中文，关键逻辑必须写清楚
+alwaysApply: true
+---
+
+# 代码注释规范
+
+所有注释**必须使用中文**。注释的目的是让人快速理解"为什么这么做"，而非重复代码本身。
+
+## 必须加注释的场景
+
+### 1. 文件头注释
+
+每个 JS 文件顶部说明文件的职责：
+
+```javascript
+/**
+ * 宠物管理路由
+ * 提供宠物的增删改查接口，所有接口需要 openId 鉴权
+ */
+```
+
+### 2. 函数/方法注释
+
+公共函数、API 路由处理器、页面生命周期中的关键方法：
+
+```javascript
+/**
+ * 加载宠物列表
+ * 从后端获取当前用户的所有宠物，并自动选中第一只
+ * 在 onShow 和下拉刷新时调用
+ */
+async loadPets() { ... }
+```
+
+### 3. 关键业务逻辑
+
+容易产生疑问的代码段必须解释"为什么"：
+
+```javascript
+// 体重记录需要同步更新宠物表的当前体重字段
+// 这样首页和统计页能直接显示最新体重，无需额外查询
+if (type === 'weight' && weight_value) {
+  db.prepare('UPDATE pets SET weight = ? WHERE id = ?').run(weight_value, pet_id);
+}
+```
+
+### 4. 异步流程和时序依赖
+
+```javascript
+// 使用 Promise 确保登录完成后再发业务请求
+// 因为所有接口都依赖 openId，而微信登录是异步的
+this._loginReady = new Promise((resolve) => {
+  this._loginResolve = resolve;
+});
+```
+
+### 5. 数据格式转换和边界处理
+
+```javascript
+// openId 统一走 URL query 而非 body
+// 原因：微信小程序的 DELETE 请求在部分机型上不发送 body
+const separator = requestUrl.includes('?') ? '&' : '?';
+requestUrl = `${requestUrl}${separator}openId=${encodeURIComponent(openId || '')}`;
+```
+
+### 6. SQL 查询
+
+复杂查询和联表操作需要说明意图：
+
+```javascript
+// 查询所有有下次日期的记录作为提醒
+// 联表查宠物名和类型，用于前端显示
+const reminders = db.prepare(`
+  SELECT r.*, p.name as pet_name, p.type as pet_type
+  FROM records r
+  JOIN pets p ON r.pet_id = p.id
+  WHERE r.user_id = ? AND r.next_date IS NOT NULL
+  ORDER BY r.next_date ASC
+`).all(req.user.id);
+```
+
+## 不需要注释的场景
+
+- 一眼就能看懂的简单赋值、getter/setter
+- 框架标准用法（如 `app.use(cors())`）
+- 已经通过良好命名自解释的代码
+
+## WXML 注释
+
+页面区域用注释分隔，说明模块作用：
+
+```html
+<!-- 宠物列表区域 -->
+<view class="pet-list"> ... </view>
+
+<!-- 无宠物时的空状态引导 -->
+<view class="empty-state" wx:if="{{pets.length === 0}}"> ... </view>
+```
+
+## WXSS 注释
+
+样式文件按模块组织，用分隔注释标记：
+
+```css
+/* ===== 表单输入框 ===== */
+.form-input { ... }
+
+/* ===== 按钮组 ===== */
+.btn-primary { ... }
+```
+
+## 注释质量标准
+
+- **说"为什么"**，不说"做了什么"（代码本身说明了做什么）
+- **简洁明了**，一两句话说清楚
+- **及时更新**，改了代码要同步改注释，过期注释比没注释更有害

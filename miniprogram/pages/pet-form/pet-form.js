@@ -1,20 +1,37 @@
+/**
+ * 宠物表单页（添加/编辑宠物）
+ *
+ * 这是一个非 TabBar 页面，通过 wx.navigateTo 打开。
+ * 页面通过 URL 参数区分模式：
+ * - 无参数 → 添加模式
+ * - ?action=editPet&petId=123 → 编辑模式，自动加载宠物数据
+ *
+ * 为什么独立成页面而不嵌在 profile 里：
+ *   profile 是 TabBar 页面，不能用 navigateTo 打开。
+ *   如果把表单嵌在 profile 里，从其他页面（如首页、添加页）
+ *   点"添加宠物"就需要 switchTab 到 profile，导致 TabBar 状态混乱。
+ */
 const app = getApp();
 const util = require('../../utils/util');
 
 Page({
   data: {
-    isEdit: false,
-    editPetId: null,
+    isEdit: false,     // 是否为编辑模式
+    editPetId: null,   // 编辑模式下的宠物 ID
     petForm: {
-      name: '',
-      type: 'cat',
-      breed: '',
-      birthday: '',
-      gender: 'male',
-      weight: '',
+      name: '',        // 宠物名字（必填）
+      type: 'cat',     // 类型：cat/dog/other
+      breed: '',       // 品种
+      birthday: '',    // 生日（可选）
+      gender: 'male',  // 性别：male/female
+      weight: '',      // 体重 kg（可选）
     },
   },
 
+  /**
+   * 页面加载时根据 URL 参数决定模式
+   * 编辑模式会从后端加载宠物数据并回填表单
+   */
   onLoad(options) {
     if (options.action === 'editPet' && options.petId) {
       this.setData({ isEdit: true, editPetId: options.petId });
