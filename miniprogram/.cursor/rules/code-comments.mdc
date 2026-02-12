@@ -110,8 +110,28 @@ const reminders = db.prepare(`
 .btn-primary { ... }
 ```
 
+## 7. 变更原因注释
+
+修改现有代码时，如果改动的原因不是一眼就能看出来的，必须注释说明为什么改：
+
+```javascript
+// 原来用 navigateTo 跳转到 profile 页，但 profile 是 TabBar 页面
+// 微信不允许 navigateTo 到 TabBar 页，所以改为独立的 pet-form 页面
+wx.navigateTo({ url: '/pages/pet-form/pet-form' });
+```
+
+```javascript
+// 原来 openId 放在 body 中传递，改为 URL query
+// 原因：DELETE 请求在部分安卓机型上不发送 body，导致鉴权失败
+requestUrl = `${requestUrl}${separator}openId=${encodeURIComponent(openId || '')}`;
+```
+
+对于 bug 修复，注释要说明：**原来的问题是什么 → 为什么会出现 → 怎么修的**。
+
 ## 注释质量标准
 
 - **说"为什么"**，不说"做了什么"（代码本身说明了做什么）
 - **简洁明了**，一两句话说清楚
 - **及时更新**，改了代码要同步改注释，过期注释比没注释更有害
+- **不写废话注释** — `i++; // i 自增` 这种注释比没有更糟糕
+- **变更必须可追溯** — 看代码和注释就能理解当初为什么这么写
